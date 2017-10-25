@@ -47,7 +47,6 @@ public class GameGrid extends JPanel {
     }
 
 
-
     private GameCell findGameCell(int rowNumber, int colNumber) {
         GameCell match = null;
         for (Component current : getComponents()) {
@@ -78,15 +77,77 @@ public class GameGrid extends JPanel {
         this.currentPlayer = currentPlayer;
     }
 
-    public boolean isGameOver() {
-        return false;
-    }
-
     public void playerTurn() {
 
     }
 
     public void computerTurn() {
         this.markGameCell(0, 0, "O");
+    }
+
+    public boolean isGameOver() {
+        return this.doesRowContainEndState() ||
+                this.doesColumnContainEndState() ||
+                this.doesDiagonalContainEndState() ||
+                this.isDraw();
+    }
+
+    private boolean doesRowContainEndState() {
+        boolean firstRow = this.isEndStatePresentInThreeGameCells(new int[]{0, 0, 0, 1, 0, 2});
+        boolean secondRow = this.isEndStatePresentInThreeGameCells(new int[]{1, 0, 1, 1, 1, 1});
+        boolean thirdRow = this.isEndStatePresentInThreeGameCells(new int[]{2, 0, 2, 1, 2, 2});
+        return firstRow || secondRow || thirdRow;
+    }
+
+    private boolean doesColumnContainEndState() {
+        boolean firstColumn = this.isEndStatePresentInThreeGameCells(new int[]{0, 0, 1, 0, 2, 0});
+        boolean secondColumn = this.isEndStatePresentInThreeGameCells(new int[]{0, 1, 1, 1, 2, 1});
+        boolean thirdColumn = this.isEndStatePresentInThreeGameCells(new int[]{0, 2, 1, 2, 2, 2});
+        return firstColumn || secondColumn || thirdColumn;
+    }
+
+    private boolean doesDiagonalContainEndState() {
+        boolean firstDiagonal = this.isEndStatePresentInThreeGameCells(new int[]{0, 0, 1, 1, 2, 2});
+        boolean secondDiagonal = this.isEndStatePresentInThreeGameCells(new int[]{0, 2, 1, 1, 2, 0});
+        return firstDiagonal || secondDiagonal;
+    }
+
+    public boolean isDraw() {
+        boolean doesRowContainEndState = this.doesRowContainEndState();
+        boolean doesColumnContainEndState = this.doesColumnContainEndState();
+        boolean doesDiagonalContainEndState = this.doesDiagonalContainEndState();
+        boolean areAllGameCellsMarked = this.areAllGameCellsMarked();
+        return !doesRowContainEndState && !doesColumnContainEndState && !doesDiagonalContainEndState && areAllGameCellsMarked;
+    }
+
+    private boolean areAllGameCellsMarked() {
+        boolean allGameCellsMarked = true;
+        for (Component component : getComponents()) {
+            JPanel panel = (JPanel) component;
+            if (panel.getComponents().length == 0) {
+                allGameCellsMarked = false;
+                break;
+            }
+        }
+        return allGameCellsMarked;
+    }
+
+    private boolean isEndStatePresentInThreeGameCells(int[] gridPositionsArray) {
+        int firstRow = gridPositionsArray[0];
+        int firstColumn = gridPositionsArray[1];
+        int secondRow = gridPositionsArray[2];
+        int secondColumn = gridPositionsArray[3];
+        int thirdRow = gridPositionsArray[4];
+        int thirdColumn = gridPositionsArray[5];
+
+        GameCell first = this.findGameCell(firstRow, firstColumn);
+        GameCell second = this.findGameCell(secondRow, secondColumn);
+        GameCell third = this.findGameCell(thirdRow, thirdColumn);
+
+        String firstMark = first.getPlayerMark();
+        String secondMark = second.getPlayerMark();
+        String thirdMark = third.getPlayerMark();
+
+        return firstMark.equals(secondMark) && secondMark.equals(thirdMark);
     }
 }

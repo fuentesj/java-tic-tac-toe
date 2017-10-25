@@ -39,4 +39,18 @@ public class GameCell extends JPanel {
         label.setForeground(Color.BLACK);
         this.add(label);
     }
+
+    public String getPlayerMark() {
+        if (this.getComponents().length > 0) {
+            Component component = this.getComponent(0);
+            if (component != null) {
+                JLabel label = (JLabel) component;
+                return label.getText();
+            } else {
+                return "";
+            }
+        } else {
+            return "";
+        }
+    }
 }
