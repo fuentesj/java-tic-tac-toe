@@ -45,7 +45,6 @@ public class GameGridTest {
         assertTrue(gameGrid.isGameOver());
     }
 
-    //@Ignore("This test needs to be fixed")
     @Test
     public void isGameOverWhenThereIsDraw() {
         gameGrid.markGameCell(0,0, "X");
