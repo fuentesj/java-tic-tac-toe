@@ -148,6 +148,6 @@ public class GameGrid extends JPanel {
         String secondMark = second.getPlayerMark();
         String thirdMark = third.getPlayerMark();
 
-        return firstMark.equals(secondMark) && secondMark.equals(thirdMark);
+        return firstMark.equals(secondMark) && secondMark.equals(thirdMark) && !firstMark.equals("");
     }
 }

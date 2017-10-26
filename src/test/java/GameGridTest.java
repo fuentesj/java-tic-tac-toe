@@ -1,6 +1,7 @@
 import org.junit.Before;
 import org.junit.Test;
 
+import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -13,6 +14,11 @@ public class GameGridTest {
     @Before
     public void setUp() {
         gameGrid = new GameGrid();
+    }
+
+    @Test
+    public void isGameNotOverWhenThereAreNoMarksOnGameGrid() {
+        assertFalse(gameGrid.isGameOver());
     }
 
     @Test
