@@ -40,19 +40,19 @@ public class GameGridTest {
         assertTrue(gameGrid.isGameOver());
     }
 
-    @Ignore("This test needs to be fixed")
+    //@Ignore("This test needs to be fixed")
     @Test
     public void isGameOverWhenThereIsDraw() {
-        gameGrid.markGameCell(0,0, "O");
-        gameGrid.markGameCell(1, 1, "O");
-        gameGrid.markGameCell(2, 2, "X");
+        gameGrid.markGameCell(0,0, "X");
+        gameGrid.markGameCell(0, 1, "O");
+        gameGrid.markGameCell(0, 2, "O");
 
-        gameGrid.markGameCell(0,0, "O");
+        gameGrid.markGameCell(1,0, "O");
         gameGrid.markGameCell(1, 1, "X");
-        gameGrid.markGameCell(2, 2, "X");
+        gameGrid.markGameCell(1, 2, "X");
 
-        gameGrid.markGameCell(0,0, "O");
-        gameGrid.markGameCell(1, 1, "X");
+        gameGrid.markGameCell(2,0, "O");
+        gameGrid.markGameCell(2, 1, "X");
         gameGrid.markGameCell(2, 2, "O");
         assertTrue(gameGrid.isDraw());
     }

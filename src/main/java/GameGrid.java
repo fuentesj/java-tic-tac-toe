@@ -65,7 +65,7 @@ public class GameGrid extends JPanel {
             gridBagConstraints.gridx = rowNumber;
             gridBagConstraints.gridy = colNumber;
             currentGameCell.markCell(player);
-            add(currentGameCell, gridBagConstraints);
+            this.add(currentGameCell, gridBagConstraints);
         }
     }
 
@@ -122,7 +122,7 @@ public class GameGrid extends JPanel {
 
     private boolean areAllGameCellsMarked() {
         boolean allGameCellsMarked = true;
-        for (Component component : getComponents()) {
+        for (Component component : this.getComponents()) {
             JPanel panel = (JPanel) component;
             if (panel.getComponents().length == 0) {
                 allGameCellsMarked = false;
