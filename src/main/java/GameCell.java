@@ -12,10 +12,13 @@ public class GameCell extends JPanel {
                 GameCell cellPane = (GameCell) e.getSource();
                 if (cellPane.isEmpty()) {
                     GameGrid gameGrid = (GameGrid) cellPane.getParent();
-                    if (gameGrid.getCurrentPlayer() == GameGrid.Player.xPlayer) {
-                        cellPane.markCell("X");
-                    } else {
-                        cellPane.markCell("O");
+                    if (gameGrid.getCurrentPlayerType() == GameGrid.PlayerType.HUMAN_PLAYER) {
+                        if (gameGrid.getCurrentPlayerMark() == GameGrid.PlayerMark.PLAYER_X) {
+                            cellPane.markCell("X");
+                        } else {
+                            cellPane.markCell("O");
+                        }
+                        gameGrid.setCurrentPlayerType(GameGrid.PlayerType.COMPUTER_PLAYER);
                     }
                     cellPane.revalidate();
                     cellPane.repaint();

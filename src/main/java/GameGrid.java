@@ -7,15 +7,23 @@ public class GameGrid extends JPanel {
 
     private GridBagConstraints gridBagConstraints;
     private GridBagLayout gridBagLayout;
-    private Player currentPlayer;
+    private PlayerMark currentPlayerMark;
 
-    public enum Player {
-        xPlayer,
-        oPlayer,
+    private PlayerType currentPlayerType;
+
+    public enum PlayerMark {
+        PLAYER_X,
+        PLAYER_O,
+    }
+
+    public enum PlayerType {
+        HUMAN_PLAYER,
+        COMPUTER_PLAYER
     }
 
     public GameGrid() {
-        this.currentPlayer = Player.xPlayer;
+        this.currentPlayerMark = PlayerMark.PLAYER_X;
+        this.currentPlayerType = PlayerType.HUMAN_PLAYER;
         this.gridBagLayout = new GridBagLayout();
         setLayout(gridBagLayout);
         this.gridBagConstraints = new GridBagConstraints();
@@ -59,22 +67,25 @@ public class GameGrid extends JPanel {
         return match;
     }
 
-    public void markGameCell(int rowNumber, int colNumber, String player) {
+    public boolean markGameCell(int rowNumber, int colNumber, String player) {
         GameCell currentGameCell = this.findGameCell(rowNumber, colNumber);
         if (currentGameCell.isEmpty()) {
             gridBagConstraints.gridx = rowNumber;
             gridBagConstraints.gridy = colNumber;
             currentGameCell.markCell(player);
             this.add(currentGameCell, gridBagConstraints);
+            return true;
+        } else {
+            return false;
         }
     }
 
-    public Player getCurrentPlayer() {
-        return currentPlayer;
+    public PlayerMark getCurrentPlayerMark() {
+        return currentPlayerMark;
     }
 
-    public void setCurrentPlayer(Player currentPlayer) {
-        this.currentPlayer = currentPlayer;
+    public void setCurrentPlayerMark(PlayerMark currentPlayerMark) {
+        this.currentPlayerMark = currentPlayerMark;
     }
 
     public void playerTurn() {
@@ -149,5 +160,13 @@ public class GameGrid extends JPanel {
         String thirdMark = third.getPlayerMark();
 
         return firstMark.equals(secondMark) && secondMark.equals(thirdMark) && !firstMark.equals("");
+    }
+
+    public PlayerType getCurrentPlayerType() {
+        return currentPlayerType;
+    }
+
+    public void setCurrentPlayerType(PlayerType currentPlayerType) {
+        this.currentPlayerType = currentPlayerType;
     }
 }

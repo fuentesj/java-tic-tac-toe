@@ -14,7 +14,7 @@ public class GameOptions extends JPanel {
 
         JPanel playerCharacterButtonPanel = new JPanel();
         playerCharacterButtonPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        playerCharacterButtonPanel.add(new JLabel("Player:"));
+        playerCharacterButtonPanel.add(new JLabel("PlayerMark:"));
         JRadioButton xRadioButton = new JRadioButton("X");
         JRadioButton yRadioButton = new JRadioButton("O");
         ButtonGroup playerCharacterButtonGroup = new ButtonGroup();
