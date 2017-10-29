@@ -8,7 +8,6 @@ public class GameGrid extends JPanel {
     private GridBagConstraints gridBagConstraints;
     private GridBagLayout gridBagLayout;
     private PlayerMark currentPlayerMark;
-
     private PlayerType currentPlayerType;
 
     public enum PlayerMark {
@@ -67,17 +66,17 @@ public class GameGrid extends JPanel {
         return match;
     }
 
-    public boolean markGameCell(int rowNumber, int colNumber, String player) {
+    public void markGameCell(int rowNumber, int colNumber, String player) {
         GameCell currentGameCell = this.findGameCell(rowNumber, colNumber);
-        if (currentGameCell.isEmpty()) {
-            gridBagConstraints.gridx = rowNumber;
-            gridBagConstraints.gridy = colNumber;
-            currentGameCell.markCell(player);
-            this.add(currentGameCell, gridBagConstraints);
-            return true;
-        } else {
-            return false;
-        }
+        gridBagConstraints.gridx = rowNumber;
+        gridBagConstraints.gridy = colNumber;
+        currentGameCell.markCell(player);
+        this.add(currentGameCell, gridBagConstraints);
+    }
+
+    public boolean isGameCellEmpty(int rowNumber, int colNumber) {
+        GameCell currentGameCell = this.findGameCell(rowNumber, colNumber);
+        return currentGameCell.isEmpty();
     }
 
     public PlayerMark getCurrentPlayerMark() {
@@ -105,7 +104,7 @@ public class GameGrid extends JPanel {
 
     private boolean doesRowContainEndState() {
         boolean firstRow = this.isEndStatePresentInThreeGameCells(new int[]{0, 0, 0, 1, 0, 2});
-        boolean secondRow = this.isEndStatePresentInThreeGameCells(new int[]{1, 0, 1, 1, 1, 1});
+        boolean secondRow = this.isEndStatePresentInThreeGameCells(new int[]{1, 0, 1, 1, 1, 2});
         boolean thirdRow = this.isEndStatePresentInThreeGameCells(new int[]{2, 0, 2, 1, 2, 2});
         return firstRow || secondRow || thirdRow;
     }

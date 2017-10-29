@@ -18,6 +18,7 @@ public class GameCell extends JPanel {
                         } else {
                             cellPane.markCell("O");
                         }
+                        gameGrid.setCurrentPlayerMark(GameGrid.PlayerMark.PLAYER_O);
                         gameGrid.setCurrentPlayerType(GameGrid.PlayerType.COMPUTER_PLAYER);
                     }
                     cellPane.revalidate();
@@ -37,10 +38,12 @@ public class GameCell extends JPanel {
     }
 
     public void markCell(String player) {
-        JLabel label = new JLabel(player, SwingConstants.LEFT);
-        label.setFont(new Font("Verdana", 1, 80));
-        label.setForeground(Color.BLACK);
-        this.add(label);
+        if (this.isEmpty()) {
+            JLabel label = new JLabel(player, SwingConstants.LEFT);
+            label.setFont(new Font("Verdana", 1, 80));
+            label.setForeground(Color.BLACK);
+            this.add(label);
+        }
     }
 
     public String getPlayerMark() {

@@ -13,15 +13,15 @@ public class EasyGameStrategy implements GameStrategy {
 
     public void makeMove(GameGrid gameGrid) {
         if (gameGrid.getCurrentPlayerType() == GameGrid.PlayerType.COMPUTER_PLAYER) {
-
-            int row = random.nextInt(2) + 0;
-            int column = random.nextInt(2) + 0;
-            System.out.println("Computer turn");
-            while (!gameGrid.markGameCell(row, column, "O")) {
-                row = random.nextInt(2) + 0;
-                column = random.nextInt(2) + 0;
+            int row = random.nextInt(3) + 0;
+            int column = random.nextInt(3) + 0;
+            while (!gameGrid.isGameCellEmpty(row, column)) {
+                row = random.nextInt(3) + 0;
+                column = random.nextInt(3) + 0;
             }
+            gameGrid.markGameCell(row, column, "O");
             gameGrid.setCurrentPlayerType(GameGrid.PlayerType.HUMAN_PLAYER);
+            gameGrid.setCurrentPlayerMark(GameGrid.PlayerMark.PLAYER_X);
             gameGrid.revalidate();
             gameGrid.repaint();
         }
