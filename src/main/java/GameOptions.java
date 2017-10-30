@@ -1,11 +1,15 @@
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.util.Enumeration;
 
 /**
  * Created by Jonathan on 10/24/17.
  */
 public class GameOptions extends JPanel {
+
+    private ButtonGroup playerCharacterButtonGroup;
+    private ButtonGroup gameDifficultyRadioButtonGroup;
 
     public GameOptions() {
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -17,9 +21,9 @@ public class GameOptions extends JPanel {
         playerCharacterButtonPanel.add(new JLabel("PlayerMark:"));
         JRadioButton xRadioButton = new JRadioButton("X");
         JRadioButton yRadioButton = new JRadioButton("O");
-        ButtonGroup playerCharacterButtonGroup = new ButtonGroup();
-        playerCharacterButtonGroup.add(xRadioButton);
-        playerCharacterButtonGroup.add(yRadioButton);
+        this.playerCharacterButtonGroup = new ButtonGroup();
+        this.playerCharacterButtonGroup.add(xRadioButton);
+        this.playerCharacterButtonGroup.add(yRadioButton);
         xRadioButton.setSelected(true);
         playerCharacterButtonPanel.add(xRadioButton, gridBagConstraints);
         playerCharacterButtonPanel.add(yRadioButton, gridBagConstraints);
@@ -31,9 +35,9 @@ public class GameOptions extends JPanel {
         buttonPanel.add(new JLabel("Game Difficulty:"));
         JRadioButton easy = new JRadioButton("Easy");
         JRadioButton hard = new JRadioButton("Hard");
-        ButtonGroup radioButtonGroup = new ButtonGroup();
-        radioButtonGroup.add(easy);
-        radioButtonGroup.add(hard);
+        this.gameDifficultyRadioButtonGroup = new ButtonGroup();
+        this.gameDifficultyRadioButtonGroup.add(easy);
+        this.gameDifficultyRadioButtonGroup.add(hard);
         easy.setSelected(true);
         buttonPanel.add(easy, gridBagConstraints);
         buttonPanel.add(hard, gridBagConstraints);
@@ -42,5 +46,28 @@ public class GameOptions extends JPanel {
 
         Border optionsPanelBorder = BorderFactory.createTitledBorder("Game Options");
         this.setBorder(optionsPanelBorder);
+    }
+
+    public String getSelectedPlayerMark() {
+
+        String selectedButtonText = null;
+        for (Enumeration<AbstractButton> buttons = playerCharacterButtonGroup.getElements(); buttons.hasMoreElements();) {
+            AbstractButton abstractButton = buttons.nextElement();
+            if (abstractButton.isSelected()) {
+                selectedButtonText = abstractButton.getText();
+            }
+        }
+        return selectedButtonText;
+    }
+
+    public String getSelectedPlayerDifficulty() {
+        String selectedButtonText = null;
+        for (Enumeration<AbstractButton> buttons = gameDifficultyRadioButtonGroup.getElements(); buttons.hasMoreElements();) {
+            AbstractButton abstractButton = buttons.nextElement();
+            if (abstractButton.isSelected()) {
+                selectedButtonText = abstractButton.getText();
+            }
+        }
+        return selectedButtonText;
     }
 }
