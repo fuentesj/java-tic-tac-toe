@@ -78,15 +78,15 @@ public class GameEngine {
             this.strategy.makeMove(this.gameGrid);
         }
 
-        Object[] colours = {"Yes", "No"};
+        Object[] options = {"Yes", "No"};
         int result = JOptionPane.showOptionDialog(null,
                 "Game Over!\nNew Game?",
                 "",
                 JOptionPane.DEFAULT_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,
-                colours,
-                colours[0]);
+                options,
+                options[0]);
         switch (result) {
             case 0:
                 resetGameEngine();
