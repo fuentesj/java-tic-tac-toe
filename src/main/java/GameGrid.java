@@ -20,9 +20,23 @@ public class GameGrid extends JPanel {
         COMPUTER_PLAYER
     }
 
-    public GameGrid() {
+    public GameGrid(GameStrategy strategy, GameEngine engine, String currentPlayerMark) {
+        if ("X".equals(currentPlayerMark)) {
+            this.currentPlayerMark = PlayerMark.PLAYER_X;
+        } else {
+            this.currentPlayerMark = PlayerMark.PLAYER_O;
+        }
+        this.currentPlayerType = PlayerType.HUMAN_PLAYER;
+        configureGameGrid(strategy, engine);
+    }
+
+    public GameGrid(GameStrategy strategy, GameEngine engine) {
         this.currentPlayerMark = PlayerMark.PLAYER_X;
         this.currentPlayerType = PlayerType.HUMAN_PLAYER;
+        configureGameGrid(strategy, engine);
+    }
+
+    private void configureGameGrid(GameStrategy strategy, GameEngine engine) {
         this.gridBagLayout = new GridBagLayout();
         setLayout(gridBagLayout);
         this.gridBagConstraints = new GridBagConstraints();
@@ -31,7 +45,7 @@ public class GameGrid extends JPanel {
                 gridBagConstraints.gridx = col;
                 gridBagConstraints.gridy = row;
 
-                GameCell cellPane = new GameCell();
+                GameCell cellPane = new GameCell(strategy, engine);
                 Border border = null;
                 if (row < 2) {
                     if (col < 2) {
@@ -68,10 +82,9 @@ public class GameGrid extends JPanel {
 
     public void markGameCell(int rowNumber, int colNumber, String player) {
         GameCell currentGameCell = this.findGameCell(rowNumber, colNumber);
-        gridBagConstraints.gridx = rowNumber;
-        gridBagConstraints.gridy = colNumber;
         currentGameCell.markCell(player);
-        this.add(currentGameCell, gridBagConstraints);
+        currentGameCell.revalidate();
+        currentGameCell.repaint();
     }
 
     public boolean isGameCellEmpty(int rowNumber, int colNumber) {
@@ -85,14 +98,6 @@ public class GameGrid extends JPanel {
 
     public void setCurrentPlayerMark(PlayerMark currentPlayerMark) {
         this.currentPlayerMark = currentPlayerMark;
-    }
-
-    public void playerTurn() {
-
-    }
-
-    public void computerTurn() {
-        this.markGameCell(0, 0, "O");
     }
 
     public boolean isGameOver() {

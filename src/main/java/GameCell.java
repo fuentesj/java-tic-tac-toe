@@ -2,27 +2,44 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameCell extends JPanel {
 
-    public GameCell() {
+    private List<MakeMoveListener> makeMoveListeners = new ArrayList<>();
+    private List<GameEndListener> gameEndListeners = new ArrayList<>();
+
+    public GameCell(GameStrategy strategy, GameEngine engine) {
+        makeMoveListeners.add((MakeMoveListener) strategy);
+        gameEndListeners.add(engine);
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 GameCell cellPane = (GameCell) e.getSource();
-                if (cellPane.isEmpty()) {
-                    GameGrid gameGrid = (GameGrid) cellPane.getParent();
-                    if (gameGrid.getCurrentPlayerType() == GameGrid.PlayerType.HUMAN_PLAYER) {
-                        if (gameGrid.getCurrentPlayerMark() == GameGrid.PlayerMark.PLAYER_X) {
-                            cellPane.markCell("X");
-                        } else {
-                            cellPane.markCell("O");
+                GameGrid gameGrid = (GameGrid) cellPane.getParent();
+                if (!gameGrid.isGameOver()) {
+                    if (cellPane.isEmpty()) {
+                        if (gameGrid.getCurrentPlayerType() == GameGrid.PlayerType.HUMAN_PLAYER) {
+                            if (gameGrid.getCurrentPlayerMark() == GameGrid.PlayerMark.PLAYER_X) {
+                                cellPane.markCell("X");
+                                gameGrid.setCurrentPlayerMark(GameGrid.PlayerMark.PLAYER_O);
+                            } else {
+                                cellPane.markCell("O");
+                                gameGrid.setCurrentPlayerMark(GameGrid.PlayerMark.PLAYER_X);
+                            }
+                            gameGrid.setCurrentPlayerType(GameGrid.PlayerType.COMPUTER_PLAYER);
                         }
-                        gameGrid.setCurrentPlayerMark(GameGrid.PlayerMark.PLAYER_O);
-                        gameGrid.setCurrentPlayerType(GameGrid.PlayerType.COMPUTER_PLAYER);
+                        cellPane.revalidate();
+                        cellPane.repaint();
+                        for (MakeMoveListener makeMoveListener : makeMoveListeners) {
+                            makeMoveListener.onMakeMoveEvent(gameGrid);
+                        }
                     }
-                    cellPane.revalidate();
-                    cellPane.repaint();
+                } else {
+                    for (GameEndListener gameEndListener : gameEndListeners) {
+                        gameEndListener.onGameEnd();
+                    }
                 }
             }
         });

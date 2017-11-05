@@ -1,13 +1,14 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Jonathan on 10/22/17.
  */
-public class GameEngine {
+public class GameEngine implements GameEndListener {
 
     private GameStrategy strategy;
     private GameGrid gameGrid;
@@ -23,9 +24,16 @@ public class GameEngine {
 
     }
 
+    public void configureGameEngine(Map<String, String> configurationMap) {
+        this.strategy = new EasyGameStrategy(this);
+        initializeGameFrame(this.strategy, configurationMap);
+        buildGameMenu();
+        displayGameFrame();
+    }
+
     public void configureGameEngine() {
-        this.strategy = new EasyGameStrategy();
-        initializeGameFrame();
+        this.strategy = new EasyGameStrategy(this);
+        initializeGameFrame(strategy, new HashMap<String, String>());
         buildGameMenu();
         displayGameFrame();
     }
@@ -37,11 +45,15 @@ public class GameEngine {
         this.frame.setVisible(true);
     }
 
-    private void initializeGameFrame() {
+    private void initializeGameFrame(GameStrategy strategy, Map<String, String> configurationMap) {
         this.primaryPanel = new JPanel();
         this.frame = new JFrame("Tic Tac Toe");
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.gameGrid = new GameGrid();
+        if (configurationMap != null && configurationMap.containsKey("selectedPlayerMark")) {
+            this.gameGrid = new GameGrid(strategy, this, configurationMap.get("selectedPlayerMark"));
+        } else {
+            this.gameGrid = new GameGrid(strategy, this);
+        }
         this.primaryPanel.add(this.gameGrid);
     }
 
@@ -54,8 +66,18 @@ public class GameEngine {
             public void actionPerformed(ActionEvent e) {
                 GameOptions gameOptions = new GameOptions();
                 JOptionPane.showMessageDialog(null, gameOptions);
-                gameOptions.getSelectedPlayerDifficulty();
-                gameOptions.getSelectedPlayerMark();
+                final Map<String, String> configurationMap = new HashMap<String, String>();
+                configurationMap.put("selectedDifficulty", gameOptions.getSelectedPlayerDifficulty());
+                configurationMap.put("selectedPlayerMark", gameOptions.getSelectedPlayerMark());
+
+                SwingWorker worker = new SwingWorker<Boolean, Integer>() {
+                    @Override
+                    public Boolean doInBackground() {
+                        resetGameEngine(configurationMap);
+                        return true;
+                    }
+                };
+                worker.execute();
             }
         });
 
@@ -67,17 +89,17 @@ public class GameEngine {
         this.frame.setJMenuBar(menuBar);
     }
 
-    private void resetGameEngine() {
+    private void resetGameEngine(Map<String, String> configurationMap) {
         this.frame.dispose();
-        configureGameEngine();
-        this.run();
+        configureGameEngine(configurationMap);
     }
 
-    public void run() {
-        while (!this.gameGrid.isGameOver()) {
-            this.strategy.makeMove(this.gameGrid);
-        }
+    private void resetGameEngine() {
+        this.frame.dispose();
+        this.configureGameEngine(new HashMap<String, String>());
+    }
 
+    public void onGameEnd() {
         Object[] options = {"Yes", "No"};
         int result = JOptionPane.showOptionDialog(null,
                 "Game Over!\nNew Game?",
