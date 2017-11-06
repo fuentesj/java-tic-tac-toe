@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,7 +13,7 @@ public class GameEngine implements GameEndListener {
     private GameGrid gameGrid;
     private JFrame frame;
     private JPanel primaryPanel;
-    private JMenu toplevelmenu;
+    private JMenu topLevelMenu;
     private JMenuBar menuBar;
     private JMenuItem menuItem;
     private JMenuItem reloadGameMenuItem;
@@ -58,9 +57,9 @@ public class GameEngine implements GameEndListener {
     }
 
     private void buildGameMenu() {
-        this.toplevelmenu = new JMenu("File");
+        this.topLevelMenu = new JMenu("File");
         this.menuBar = new JMenuBar();
-        this.menuBar.add(toplevelmenu);
+        this.menuBar.add(topLevelMenu);
         this.menuItem = new JMenuItem("Options");
         this.menuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -81,11 +80,11 @@ public class GameEngine implements GameEndListener {
             }
         });
 
-        this.toplevelmenu.add(menuItem);
+        this.topLevelMenu.add(menuItem);
         this.reloadGameMenuItem = new JMenuItem("Reload Game");
-        this.toplevelmenu.add(this.reloadGameMenuItem);
+        this.topLevelMenu.add(this.reloadGameMenuItem);
         this.saveMenuItem = new JMenuItem("Save Game");
-        toplevelmenu.add(saveMenuItem);
+        topLevelMenu.add(saveMenuItem);
         this.frame.setJMenuBar(menuBar);
     }
 
@@ -112,7 +111,6 @@ public class GameEngine implements GameEndListener {
         switch (result) {
             case 0:
                 resetGameEngine();
-                System.out.println("Yes");
                 break;
             case 1:
                 System.exit(0);

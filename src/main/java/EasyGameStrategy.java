@@ -16,7 +16,6 @@ public class EasyGameStrategy implements GameStrategy, MakeMoveListener {
 
     @Override
     public void onMakeMoveEvent(GameGrid gameGrid) {
-        System.out.println("Computer turn!");
         makeMove(gameGrid);
     }
 
