@@ -11,6 +11,7 @@ public class GameEngine implements GameEndListener {
 
     private GameStrategy strategy;
     private GameGrid gameGrid;
+    private GameOptions gameOptions;
     private JFrame frame;
     private JPanel primaryPanel;
     private JMenu topLevelMenu;
@@ -24,6 +25,7 @@ public class GameEngine implements GameEndListener {
     }
 
     public void configureGameEngine(Map<String, String> configurationMap) {
+        this.gameOptions = new GameOptions(configurationMap);
         this.strategy = new EasyGameStrategy(this);
         initializeGameFrame(this.strategy, configurationMap);
         buildGameMenu();
@@ -31,6 +33,7 @@ public class GameEngine implements GameEndListener {
     }
 
     public void configureGameEngine() {
+        this.gameOptions = new GameOptions(new HashMap<String, String>());
         this.strategy = new EasyGameStrategy(this);
         initializeGameFrame(strategy, new HashMap<String, String>());
         buildGameMenu();
@@ -63,9 +66,8 @@ public class GameEngine implements GameEndListener {
         this.menuItem = new JMenuItem("Options");
         this.menuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                GameOptions gameOptions = new GameOptions();
                 JOptionPane.showMessageDialog(null, gameOptions);
-                final Map<String, String> configurationMap = new HashMap<String, String>();
+                final Map<String, String> configurationMap = new HashMap<>();
                 configurationMap.put("selectedDifficulty", gameOptions.getSelectedPlayerDifficulty());
                 configurationMap.put("selectedPlayerMark", gameOptions.getSelectedPlayerMark());
 
@@ -110,7 +112,10 @@ public class GameEngine implements GameEndListener {
                 options[0]);
         switch (result) {
             case 0:
-                resetGameEngine();
+                Map<String, String> configurationMap = new HashMap<>();
+                configurationMap.put("selectedDifficulty", gameOptions.getSelectedPlayerDifficulty());
+                configurationMap.put("selectedPlayerMark", gameOptions.getSelectedPlayerMark());
+                resetGameEngine(configurationMap);
                 break;
             case 1:
                 System.exit(0);

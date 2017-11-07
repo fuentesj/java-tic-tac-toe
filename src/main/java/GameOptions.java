@@ -2,6 +2,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.util.Enumeration;
+import java.util.Map;
 
 /**
  * Created by Jonathan on 10/24/17.
@@ -11,11 +12,9 @@ public class GameOptions extends JPanel {
     private ButtonGroup playerCharacterButtonGroup;
     private ButtonGroup gameDifficultyRadioButtonGroup;
 
-    public GameOptions() {
+    public GameOptions(Map<String, String> configurationMap) {
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
-
         JPanel playerCharacterButtonPanel = new JPanel();
         playerCharacterButtonPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         playerCharacterButtonPanel.add(new JLabel("PlayerMark:"));
@@ -24,7 +23,13 @@ public class GameOptions extends JPanel {
         this.playerCharacterButtonGroup = new ButtonGroup();
         this.playerCharacterButtonGroup.add(xRadioButton);
         this.playerCharacterButtonGroup.add(yRadioButton);
-        xRadioButton.setSelected(true);
+        if ("X".equals(configurationMap.get("selectedPlayerMark"))) {
+            xRadioButton.setSelected(true);
+        } else if ("O".equals(configurationMap.get("selectedPlayerMark"))) {
+            yRadioButton.setSelected(true);
+        } else {
+            xRadioButton.setSelected(true);
+        }
         playerCharacterButtonPanel.add(xRadioButton, gridBagConstraints);
         playerCharacterButtonPanel.add(yRadioButton, gridBagConstraints);
         playerCharacterButtonPanel.setToolTipText("Choose to play as either X or O.");
